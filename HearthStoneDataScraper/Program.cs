@@ -33,13 +33,15 @@ namespace HearthStoneDataScraper
             "/Blackrock_Mountain_card_list",
             "/The_Grand_Tournament_card_list",
             "/The_League_of_Explorers_card_list",
+            "/Whispers_of_the_Old_Gods_card_list",
             "/One_Night_in_Karazhan_card_list",
             "/Mean_Streets_of_Gadgetzan_card_list",
             "/Journey_to_Un%27Goro_card_list",
             "/Hall_of_Fame_card_list",
+            "/Debug_card",
 
         };
-        internal readonly ParallelOptions POptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 10 };
+        internal readonly ParallelOptions POptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount / 2 * 10 };
 
         internal HttpClient _web;
         internal HtmlParser _parser;
@@ -98,7 +100,7 @@ namespace HearthStoneDataScraper
                 {
 
                     Name = cardInfo.FirstElementChild.TextContent,
-                    RegularImage = GetImageSrc(images.First()),
+                    RegularImage = GetImageSrc(images.FirstOrDefault() ?? "N/A"),
                     GoldImage = GetImageSrc(images.ElementAtOrDefault(1) ?? "N/A"),
                     Collectability = isCollectible ? Status.Collectible : Status.Uncollectible,
                     Artist = GetArtist(mainDom),
@@ -215,10 +217,15 @@ namespace HearthStoneDataScraper
                 var mainDom = dom.GetElementById("mw-content-text");
                 var tables = mainDom.GetElementsByTagName("table");
                 var collectibleCards = tables[0].GetElementsByTagName("tbody").First().Children.Where(element => !element.TextContent.Contains("Description") && !element.TextContent.Contains("Showing all"));
-                var uncollectibleCards = tables[1].GetElementsByTagName("tbody").First().Children.Where(element => !element.TextContent.Contains("Description") && !element.TextContent.Contains("Showing all"));
+                var uncollectibleCards = expansion == "/Debug_card" ? 
+                collectibleCards : 
+                tables[1].GetElementsByTagName("tbody").First().Children.Where(element => !element.TextContent.Contains("Description") && !element.TextContent.Contains("Showing all"));
 
                 foreach (var card in collectibleCards)
                 {
+
+                    if (expansion == "/Debug_card")
+                        break;
 
                     var cardUrl = card.GetElementsByTagName("a").First().GetAttribute("href");
 
