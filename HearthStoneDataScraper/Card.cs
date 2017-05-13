@@ -31,6 +31,7 @@ namespace HearthStoneDataScraper
 
         public string RegularImage { get; set; }
         public string GoldImage { get; set; }
+        public string FullArt { get; set; }
 
         public string Artist { get; set; }
 

@@ -102,13 +102,13 @@ namespace HearthStoneDataScraper
                     Name = cardInfo.FirstElementChild.TextContent,
                     RegularImage = GetImageSrc(images.FirstOrDefault() ?? "N/A"),
                     GoldImage = GetImageSrc(images.ElementAtOrDefault(1) ?? "N/A"),
+                    FullArt = GetFullArt(mainDom),
                     Collectability = isCollectible ? Status.Collectible : Status.Uncollectible,
                     Artist = GetArtist(mainDom),
                     Url = BaseUrl + link,
 
                 };
 
-                //all tag names are capitalized in anglesharp
                 if (!string.IsNullOrEmpty(descLore.First().GetAttribute("style")))
                 {
 
@@ -200,6 +200,18 @@ namespace HearthStoneDataScraper
 
             var artistTitleIndex = dom.Children.ToList().IndexOf(artistTitle);
             return dom.Children.ElementAt(artistTitleIndex + 1).FirstElementChild.TextContent;
+
+        }
+
+        internal string GetFullArt(IElement dom)
+        {
+
+            var checkImage = dom.GetElementsByClassName("thumb tleft").FirstOrDefault();
+
+            if (checkImage == null)
+                return null;
+
+            return checkImage.GetElementsByTagName("img").FirstOrDefault()?.GetAttribute("src");
 
         }
 
