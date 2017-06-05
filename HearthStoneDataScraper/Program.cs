@@ -23,6 +23,7 @@ namespace HearthStoneDataScraper
             => new Program().Run();
 
         internal const string BaseUrl = "http://hearthstone.gamepedia.com";
+        internal const string WhiteSpacePattern = @"\s+";
         internal readonly string[] CardLists = new string[]
         {
 
@@ -112,15 +113,15 @@ namespace HearthStoneDataScraper
                 if (!string.IsNullOrEmpty(descLore.First().GetAttribute("style")))
                 {
 
-                    card.Description = descLore.First().TextContent;
+                    card.Description = Regex.Replace(descLore.First().TextContent.Trim(), WhiteSpacePattern, " ");
                     var possibleLore = descLore[1];
 
                     if (possibleLore.FirstElementChild.TagName != "A")
-                        card.Lore = descLore[1].TextContent;
+                        card.Lore = Regex.Replace(descLore[1].TextContent.Trim(), WhiteSpacePattern, " ");
 
                 }
                 else
-                    card.Lore = descLore.First().TextContent;
+                    card.Lore = Regex.Replace(descLore.First().TextContent.Trim(), WhiteSpacePattern, " ");
 
                 foreach (var statLine in stats)
                 {
