@@ -100,8 +100,8 @@ namespace HearthStoneDataScraper
                 {
 
                     Name = cardInfo.FirstElementChild.TextContent,
-                    RegularImage = GetImageSrc(images.FirstOrDefault() ?? "N/A"),
-                    GoldImage = GetImageSrc(images.ElementAtOrDefault(1) ?? "N/A"),
+                    RegularImage = GetImageSrc(images.FirstOrDefault()),
+                    GoldImage = GetImageSrc(images.ElementAtOrDefault(1)),
                     FullArt = GetFullArt(mainDom),
                     Collectability = isCollectible ? Status.Collectible : Status.Uncollectible,
                     Artist = GetArtist(mainDom),
@@ -153,7 +153,7 @@ namespace HearthStoneDataScraper
                         case "Health:":
                             card.Health = value;
                             break;
-                        case "Durability":
+                        case "Durability:":
                             card.Durability = value;
                             break;
                         case "Abilities:":
@@ -181,7 +181,7 @@ namespace HearthStoneDataScraper
         internal string GetImageSrc(string srcSet)
         {
 
-            var qualityLink = srcSet.Split(',').ElementAtOrDefault(1)?.Trim();
+            var qualityLink = srcSet?.Split(',').ElementAtOrDefault(1)?.Trim();
 
             if (string.IsNullOrEmpty(qualityLink))
                 return srcSet;
