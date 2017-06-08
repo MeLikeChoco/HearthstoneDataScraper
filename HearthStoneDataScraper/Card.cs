@@ -14,7 +14,8 @@ namespace HearthStoneDataScraper
 
         public string Name { get; set; }
         public string Set { get; set; } = "N/A";
-        public string Type { get; set; } = "N/A";
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Type Type { get; set; }
         public string Class { get; set; } = "N/A";
         public string Rarity { get; set; } = "N/A";
 
@@ -26,8 +27,10 @@ namespace HearthStoneDataScraper
         public string[] Abilities { get; set; }
         public string[] Tags { get; set; }
 
-        public string Description { get; set; } = "N/A";
+        public string Description { get; set; }
         public string Lore { get; set; }
+        public string Aquisition { get; set; }
+        public string Bosses { get; set; }
 
         public string RegularImage { get; set; }
         public string GoldImage { get; set; }
@@ -47,6 +50,16 @@ namespace HearthStoneDataScraper
 
         Collectible,
         Uncollectible
+
+    }
+
+    public enum Type
+    {
+
+        Spell,
+        Weapon,
+        Minion,
+        Enchantment
 
     }
 
