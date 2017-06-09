@@ -16,13 +16,16 @@ namespace HearthStoneDataScraper
         public string Set { get; set; } = "N/A";
         [JsonConverter(typeof(StringEnumConverter))]
         public Type Type { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Race Race { get; set; }
         public string Class { get; set; } = "N/A";
-        public string Rarity { get; set; } = "N/A";
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Rarity Rarity { get; set; }
 
-        public string ManaCost { get; set; } = "N/A";
-        public string Attack { get; set; } = "N/A";
-        public string Health { get; set; } = "N/A";
-        public string Durability { get; set; } = "N/A";
+        public string ManaCost { get; set; }
+        public string Attack { get; set; }
+        public string Health { get; set; }
+        public string Durability { get; set; }
         //using a set cause wynaut
         public string[] Abilities { get; set; }
         public string[] Tags { get; set; }
@@ -50,16 +53,42 @@ namespace HearthStoneDataScraper
 
         Collectible,
         Uncollectible
-
+        
     }
 
     public enum Type
     {
 
+        Unknown,
         Spell,
         Weapon,
         Minion,
         Enchantment
+
+    }
+
+    public enum Race
+    {
+
+        General,
+        Beast,
+        Demon,
+        Dragon,
+        Elemental,
+        Mech,
+        Pirate,
+        Totem
+
+    }
+
+    public enum Rarity
+    {
+
+        Basic,
+        Common,
+        Rare,
+        Epic,
+        Legendary
 
     }
 

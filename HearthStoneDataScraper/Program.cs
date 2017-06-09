@@ -171,14 +171,19 @@ namespace HearthStoneDataScraper
                                 card.Set = value;
                                 break;
                             case "Type:":
-                                Enum.TryParse(value, out Type cardType);
+                                Enum.TryParse<Type>(value, out var cardType);
                                 card.Type = cardType;
+                                break;
+                            case "Subtype":
+                                Enum.TryParse<Race>(value, out var race);
+                                card.Race = race;
                                 break;
                             case "Class:":
                                 card.Class = value;
                                 break;
                             case "Rarity:":
-                                card.Rarity = value;
+                                Enum.TryParse<Rarity>(value, out var rarity);
+                                card.Rarity = rarity;
                                 break;
                             case "Cost:":
                                 card.ManaCost = value;
@@ -187,7 +192,7 @@ namespace HearthStoneDataScraper
                                 card.Attack = value;
                                 break;
                             case "Health:":
-                                card.Health = value;
+                                card.Health = Regex.Replace(value.Replace(")", ") "), WhiteSpacePattern, " ");
                                 break;
                             case "Durability:":
                                 card.Durability = value;
@@ -353,7 +358,19 @@ namespace HearthStoneDataScraper
 
             }
 
-            return checkImage.GetElementsByTagName("img").FirstOrDefault()?.GetAttribute("src");
+            var img = checkImage.GetElementsByTagName("img").First();
+            var srcSet = img.GetAttribute("srcset");
+
+            if (srcSet == null)
+                return img.GetAttribute("src");
+
+            var array = srcSet.Split(',');
+            var qualityLink = array.ElementAtOrDefault(1)?.Trim();
+
+            if (string.IsNullOrEmpty(qualityLink))
+                return srcSet;
+            else
+                return qualityLink.Split(' ').First();
 
         }
 
