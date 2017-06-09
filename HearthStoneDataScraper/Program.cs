@@ -343,22 +343,35 @@ namespace HearthStoneDataScraper
 
         }
 
+        //web scraping makes me want to shoot myself :D
         internal string GetFullArt(IElement dom)
         {
 
-            var checkImage = dom.GetElementsByClassName("thumb tleft").FirstOrDefault();
+            var galleryTitle = dom.GetElementsByTagName("h2").FirstOrDefault(element => element.TextContent.Contains("Gallery"));
+
+            if (galleryTitle == null)
+                return null;
+
+            var childrenList = dom.Children.ToList();
+            var beginIndex = childrenList.IndexOf(galleryTitle);
+            childrenList = childrenList.GetRange(beginIndex, childrenList.Count - beginIndex);
+            var checkImage = childrenList.FirstOrDefault(element => element.ClassName == "thumb tleft");
 
             if (checkImage == null)
             {
 
-                checkImage = dom.GetElementsByClassName("thumb tright").FirstOrDefault();
+                checkImage = childrenList.FirstOrDefault(element => element.ClassName == "thumb tright");
 
                 if (checkImage == null)
                     return null;
 
             }
 
-            var img = checkImage.GetElementsByTagName("img").First();
+            var img = checkImage.GetElementsByTagName("img").FirstOrDefault();
+
+            if (img == null)
+                return null;
+
             var srcSet = img.GetAttribute("srcset");
 
             if (srcSet == null)
