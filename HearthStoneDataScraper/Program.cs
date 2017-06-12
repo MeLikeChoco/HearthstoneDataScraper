@@ -352,15 +352,17 @@ namespace HearthStoneDataScraper
             if (galleryTitle == null)
                 return null;
 
-            var childrenList = dom.Children.ToList();
-            var beginIndex = childrenList.IndexOf(galleryTitle);
-            childrenList = childrenList.GetRange(beginIndex, childrenList.Count - beginIndex);
-            var checkImage = childrenList.FirstOrDefault(element => element.ClassName == "thumb tleft");
+            //var childrenList = dom.Children.ToList();
+            //var beginIndex = childrenList.IndexOf(galleryTitle);
+            //childrenList = childrenList.GetRange(beginIndex, childrenList.Count - beginIndex);
+            //var checkImage = childrenList.FirstOrDefault(element => element.ClassName == "thumb tleft");
+            var checkImage = dom.GetElementsByClassName("thumb tleft").FirstOrDefault();
 
             if (checkImage == null)
             {
 
-                checkImage = childrenList.FirstOrDefault(element => element.ClassName == "thumb tright");
+                //checkImage = childrenList.FirstOrDefault(element => element.ClassName == "thumb tright");
+                checkImage = dom.GetElementsByClassName("thumb tright").FirstOrDefault();
 
                 if (checkImage == null)
                     return null;
