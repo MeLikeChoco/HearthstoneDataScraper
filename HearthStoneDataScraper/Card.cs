@@ -33,7 +33,9 @@ namespace HearthStoneDataScraper
         public string Description { get; set; }
         public string Lore { get; set; }
         public string Aquisition { get; set; }
-        public string Bosses { get; set; }
+
+        public string[] Bosses { get; set; }
+        public Source Source { get; set; }
 
         public string RegularImage { get; set; }
         public string GoldImage { get; set; }
@@ -48,12 +50,28 @@ namespace HearthStoneDataScraper
 
     }
 
+    public class Source
+    {
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public SourceType Type { get; set; }
+        public string[] Sources { get; set; }
+
+        public Source(SourceType type)
+        {
+
+            Type = type;
+
+        }
+
+    }
+
     public enum Status
     {
 
         Collectible,
         Uncollectible
-        
+
     }
 
     public enum Type
@@ -89,6 +107,15 @@ namespace HearthStoneDataScraper
         Rare,
         Epic,
         Legendary
+
+    }
+
+    public enum SourceType
+    {
+
+        Summoned,
+        Generated,
+        Transformed
 
     }
 
