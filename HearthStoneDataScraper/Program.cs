@@ -115,7 +115,10 @@ namespace HearthStoneDataScraper
                 var dom = _parser.ParseAsync(_web.GetStreamAsync(link).Result).Result;
                 var mainDom = dom.GetElementById("mw-content-text");
                 var cardInfo = mainDom.GetElementsByTagName("div").First();
-                var images = cardInfo.GetElementsByClassName("image").Select(image => image.GetAttribute("srcset") ?? image.GetAttribute("src")); //flatten list
+                var images = cardInfo.GetElementsByTagName("a")
+                .Where(element => element.ClassName == "image")
+                .Select(element => element.GetElementsByTagName("img").FirstOrDefault())
+                .Select(image => image.GetAttribute("srcset") ?? image.GetAttribute("src"));
                 var stats = cardInfo.GetElementsByClassName("body").FirstOrDefault()?.GetElementsByTagName("tr");
                 var descLore = cardInfo.GetElementsByTagName("p");
 
