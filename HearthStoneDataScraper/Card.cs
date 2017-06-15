@@ -18,7 +18,8 @@ namespace HearthStoneDataScraper
         public Type Type { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public Race Race { get; set; }
-        public string Class { get; set; } = "N/A";
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+        public Class[] Class { get; set; } = new Class[] { HearthStoneDataScraper.Class.None };
         [JsonConverter(typeof(StringEnumConverter))]
         public Rarity Rarity { get; set; }
 
@@ -63,6 +64,22 @@ namespace HearthStoneDataScraper
             Type = type;
 
         }
+
+    }
+
+    public enum Class
+    {
+
+        None,
+        Druid,
+        Hunter,
+        Mage,
+        Paladin,
+        Priest,
+        Rogue,
+        Shaman,
+        Warlock,
+        Warrior
 
     }
 
