@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /HearthStoneDataScraper/Database.json
+/HearthStoneDataScraper/Properties/PublishProfiles/FolderProfile.pubxml
