@@ -132,7 +132,8 @@ namespace HearthStoneDataScraper
 
         Summoned,
         Generated,
-        Transformed
+        Transformed,
+        Chosen
 
     }
 
