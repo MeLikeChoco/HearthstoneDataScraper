@@ -33,18 +33,20 @@ namespace HearthStoneDataScraper
         {
 
             "/index.php?title=Category:All_cards",
-            "/index.php?title=Category:All_cards&pagefrom=Beneath+the+Grounds#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Cloaked+Huntress#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Dismount#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Fen+Creeper#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Grimestreet+Enforcer#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Jade+Golem+%2827%2F27%29#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Magic+Mirror#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Nerubian+Egg#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Ragnaros+the+Firelord#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Shaku%2C+the+Collector#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Stonesculpting+%28Normal%29#mw-pages",
-            "/index.php?title=Category:All_cards&pagefrom=Twisted+Light#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Barrel+Toss#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Chang%2C+Bryan%0ABryan+Chang#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Del+Priore%2C+Eric%0AEric+Del+Priore#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Enraged%21#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Frostmourne#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Hooded+Acolyte#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Klaxxi+Amber-Weaver#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Medivh#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Ooze+%28Bilefin+Tidehunter%29#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Reflections+%28Heroic%29#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Shimmering+Tempest#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Stormcrack#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=True+Form#mw-pages",
+            "/index.php?title=Category:All_cards&pagefrom=Wrathguard#mw-pages",
 
         };
         internal readonly string[] CardLists = new string[]
@@ -61,6 +63,7 @@ namespace HearthStoneDataScraper
             "/One_Night_in_Karazhan_card_list",
             "/Mean_Streets_of_Gadgetzan_card_list",
             "/Journey_to_Un%27Goro_card_list",
+            "/Knights_of_the_Frozen_Throne_card_list",
             "/Hall_of_Fame_card_list",
             "/Debug_card",
 
@@ -556,12 +559,17 @@ namespace HearthStoneDataScraper
             {
 
                 var dom = _parser.Parse(_web.GetStreamAsync(expansion).Result);
-                var mainDom = dom.GetElementById("mw-content-text");
-                var tables = mainDom.GetElementsByTagName("table");
-                var collectibleCards = tables[0].GetElementsByTagName("tbody").First().Children.Where(element => !element.TextContent.Contains("Description") && !element.TextContent.Contains("Showing all"));
+                var collectibleCards = dom.GetElementsByClassName("cardtable-collapsible").First()
+                .GetElementsByTagName("tbody").First()
+                .Children
+                .Where(element => !element.TextContent.Contains("Description") && !element.TextContent.Contains("Showing all"));
+
                 var uncollectibleCards = expansion == "/Debug_card" ?
                 collectibleCards :
-                tables[1].GetElementsByTagName("tbody").First().Children.Where(element => !element.TextContent.Contains("Description") && !element.TextContent.Contains("Showing all"));
+                dom.GetElementsByClassName("cardtable-collapsible")[1]
+                .GetElementsByTagName("tbody").First()
+                .Children
+                .Where(element => !element.TextContent.Contains("Description") && !element.TextContent.Contains("Showing all"));
 
                 foreach (var card in collectibleCards)
                 {
